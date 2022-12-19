@@ -1,0 +1,48 @@
+#include<stdio.h>
+int n,e,graph[100][100];
+int front,back,queue[100];
+int vis[100];
+
+void push(int val){
+    queue[back++]=val;
+}
+void pop(){
+    queue[front++]=0;
+}
+
+void bfs(int s){
+    push(s);
+    vis[s]=1;
+
+    while(front!=back){
+        int cur=queue[front];
+        printf("%d ",cur);
+        pop();
+
+        for(int i=0; i<n; i++){
+            if(graph[cur][i] && !vis[i]){
+                vis[i]=1;
+                push(i);
+            }
+        }
+    }
+    return;
+}
+
+int main(){
+    printf("Enter number of node: ");
+    scanf("%d",&n);
+
+    printf("Enter number of edge: ");
+    scanf("%d",&e);
+
+    printf("Enter edge:\n");
+    for(int i=0; i<e; i++){
+        int x,y;
+        scanf("%d %d",&x,&y);
+        graph[x][y]=graph[y][x]=1;
+    }
+
+    bfs(0);
+}
+
