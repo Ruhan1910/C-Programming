@@ -1,0 +1,75 @@
+#include<stdio.h>
+int n,e,s,d,graph[100][100];
+int front,back,pos,queue[100][100];
+int size[100], path[100], x;
+
+void printpath(){
+    for(int i=0; i<x; i++){
+        printf("%d ",path[i]);
+    }
+    return;
+}
+
+int isNotVisited(int xx){
+    for(int i=0; i<x; i++){
+        if(path[i]==xx) return 0;
+    }
+    return 1;
+}
+
+void bfs(){
+    path[x++]=s;
+    queue[back][0]=s;
+    size[back++]=1;
+
+    while(front!=back){
+        x=0;
+        for(int i=0; i<size[front]; i++){
+            path[x++]=queue[front][i];
+        }
+        front++;
+        int last=path[x-1];
+
+        if(last==d){
+            printpath();
+            return;
+        }
+        for(int i=0; i<n; i++){
+            if(graph[last][i]){
+                if(isNotVisited(i)){
+                    int newpath[100], y=0;
+                    for(int j=0; j<x; j++){
+                        newpath[y++]=path[j];
+                    }
+                    newpath[y++]=i;
+                    for(int j=0; j<y; j++){
+                        queue[back][j]=newpath[j];
+                    }
+                    size[back]=y;
+                    back++;
+                }
+            }
+        }
+    }
+    return;
+}
+
+int main(){
+    printf("Enter number of node: ");
+    scanf("%d",&n);
+
+    printf("Enter number of edge: ");
+    scanf("%d",&e);
+
+    printf("Enter edge:\n");
+    for(int i=0; i<e; i++){
+        int a,b;
+        scanf("%d %d",&a,&b);
+        graph[a][b]=graph[b][a]=1;
+    }
+
+    printf("Enter the source and destination node: ");
+    scanf("%d %d",&s,&d);
+    bfs();
+}
+
